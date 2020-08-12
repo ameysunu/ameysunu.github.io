@@ -10,9 +10,9 @@ const RESOURCES = {
 "assets/images/email.png": "757e6794eb1bf3c8b9b7b03628c1cadd",
 "assets/images/facebook.png": "97a65097ec284138d23be3d1e9fe1106",
 "assets/images/github.png": "725bd4980aa791af30cea6a1855e9a5d",
-"assets/images/groupimage.JPG": "7be14484366046f18a65963ce8bd5f8c",
+"assets/images/groupimage.JPG": "e2d02f236218c3843a438f40e384911c",
 "assets/images/linkedin.png": "ea0fd78ea24e8f59cdf09cfdae117891",
-"assets/images/myimage.jpeg": "d008c592ff15f4ab8f6f0321fd4e8858",
+"assets/images/myimage.jpeg": "ab19a68076c5daa79f4d3e5b24a08389",
 "assets/NOTICES": "c26c3ad5d37398c7e610b7a74166156b",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "115e937bb829a890521f72d2e664b632",
 "favicon.png": "7ee0cec6e910cf85030c40c19c430c65",
@@ -20,7 +20,7 @@ const RESOURCES = {
 "icons/Icon-512.png": "00f4e9c9092c7050837eb8a2e772d7a1",
 "index.html": "586ae6010c1b5e7dd66a2026a0a3fbd3",
 "/": "586ae6010c1b5e7dd66a2026a0a3fbd3",
-"main.dart.js": "279aae5b70101f18336b06f31fe8fd6a",
+"main.dart.js": "e4b19b1051c00c9b724ae98afad51b3d",
 "manifest.json": "025e9597905d898b1e041e421a4e51da"
 };
 
