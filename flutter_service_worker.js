@@ -3,24 +3,23 @@ const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
-  "assets/AssetManifest.json": "27feabf8202e4d675812eb73f8cc270c",
+  "assets/AssetManifest.json": "0c044a7c6e84447db07778c95d7b6bd5",
 "assets/FontManifest.json": "b7944817cfbc44cf82fbf89ff80b9c4a",
 "assets/fonts/MaterialIcons-Regular.ttf": "56d3ffdef7a25659eab6a68a3fbfaf16",
 "assets/fonts/Poppins-SemiBold.ttf": "342ba3d8ac29ac8c38d7cef8efbf2dc9",
-"assets/images/email.png": "757e6794eb1bf3c8b9b7b03628c1cadd",
-"assets/images/facebook.png": "97a65097ec284138d23be3d1e9fe1106",
-"assets/images/github.png": "725bd4980aa791af30cea6a1855e9a5d",
-"assets/images/groupimage.JPG": "e2d02f236218c3843a438f40e384911c",
-"assets/images/linkedin.png": "ea0fd78ea24e8f59cdf09cfdae117891",
-"assets/images/myimage.jpeg": "ab19a68076c5daa79f4d3e5b24a08389",
-"assets/NOTICES": "c26c3ad5d37398c7e610b7a74166156b",
+"assets/images/bodyimg.png": "4fe7a62041542a45444c708d02ff85bd",
+"assets/images/email.png": "c809e37f07cf0622c369a81ddb3bdc3b",
+"assets/images/facebook.png": "1cd1e6fc957b5f56cca8fb2b2820c7d0",
+"assets/images/github.png": "9fe541b8a69e986b12bc1b14cbc33520",
+"assets/images/linkedin.png": "41885fd414edf6f990ea754a0c78600b",
+"assets/NOTICES": "5fcf693d27615215f9435fca9610c7d2",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "115e937bb829a890521f72d2e664b632",
-"favicon.png": "7ee0cec6e910cf85030c40c19c430c65",
-"icons/Icon-192.png": "194aeb01ff402d9337743e8a77e38c69",
-"icons/Icon-512.png": "00f4e9c9092c7050837eb8a2e772d7a1",
+"favicon.png": "a890124851dbaa8b4719b2921e302fa6",
+"icons/Icon-192.png": "a2ed25b8dadc2ff341befd34331ffe92",
+"icons/Icon-512.png": "d9b615cc27df2955161adb614bd3a0f7",
 "index.html": "586ae6010c1b5e7dd66a2026a0a3fbd3",
 "/": "586ae6010c1b5e7dd66a2026a0a3fbd3",
-"main.dart.js": "e4b19b1051c00c9b724ae98afad51b3d",
+"main.dart.js": "ce575352548b0fdca373236cf01462f9",
 "manifest.json": "025e9597905d898b1e041e421a4e51da"
 };
 
@@ -30,7 +29,7 @@ const CORE = [
   "/",
 "main.dart.js",
 "index.html",
-"assets/LICENSE",
+"assets/NOTICES",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
 
@@ -112,7 +111,7 @@ self.addEventListener("fetch", (event) => {
   if (event.request.url == origin || event.request.url.startsWith(origin + '/#')) {
     key = '/';
   }
-  // If the URL is not the the RESOURCE list, skip the cache.
+  // If the URL is not the RESOURCE list, skip the cache.
   if (!RESOURCES[key]) {
     return event.respondWith(fetch(event.request));
   }
@@ -135,11 +134,11 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener('message', (event) => {
   // SkipWaiting can be used to immediately activate a waiting service worker.
   // This will also require a page refresh triggered by the main worker.
-  if (event.message == 'skipWaiting') {
+  if (event.data === 'skipWaiting') {
     return self.skipWaiting();
   }
 
-  if (event.message = 'downloadOffline') {
+  if (event.message === 'downloadOffline') {
     downloadOffline();
   }
 });
@@ -159,8 +158,8 @@ async function downloadOffline() {
   }
   for (var resourceKey in Object.keys(RESOURCES)) {
     if (!currentContent[resourceKey]) {
-      resources.add(resourceKey);
+      resources.push(resourceKey);
     }
   }
-  return Cache.addAll(resources);
+  return contentCache.addAll(resources);
 }
