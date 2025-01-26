@@ -1,0 +1,154 @@
+@font-face {
+  font-family: Sans-Regular;
+  src: url("../fonts/Product Sans Regular.ttf");
+}
+
+.bg-progress-cont {
+  background-color: #f2e1b2;
+}
+
+.bg-progress-cont-2 {
+  background-color: #9c2c34;
+}
+
+.skill-font {
+  font-size: 20px;
+  font-family: "Sans-Regular";
+  padding-top: 50px;
+  color: #f2e1b2;
+}
+
+.skill-font-2 {
+  font-size: 20px;
+  font-family: "Sans-Regular";
+  padding-top: 50px;
+  color: #9c2c34;
+}
+
+.skill-box {
+  width: 100%;
+  border: 1px solid #83242a;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: #83242a 0px 0px 10px;
+  background-color: #9c2c34;
+  border-radius: 10px;
+  margin: auto;
+}
+
+.skill-box-2 {
+  width: 100%;
+  border: 1px solid #b6a986;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: #b6a986 0px 0px 10px;
+  background-color: #f2e1b2;
+  border-radius: 10px;
+  margin: auto;
+}
+
+.centered-label {
+  text-align: center;
+}
+
+.mobile-img {
+  width: 200px;
+  height: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.grid {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-img {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .skill-box {
+    width: 80%;
+    border: 1px solid #83242a;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: #83242a 0px 0px 10px;
+    background-color: #9c2c34;
+    border-radius: 10px;
+    margin: auto;
+  }
+
+  .mobile-grid {
+    display: none;
+  }
+  .skill-box-2 {
+    width: 80%;
+    border: 1px solid #b6a986;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: #b6a986 0px 0px 10px;
+    background-color: #f2e1b2;
+    border-radius: 10px;
+    margin: auto;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 50px;
+  }
+}
+
+@media (min-width: 600px) {
+  .mobile-img {
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .mobile-grid {
+    display: none;
+  }
+  .skill-box {
+    width: 80%;
+    border: 1px solid #83242a;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: #83242a 0px 0px 10px;
+    background-color: #9c2c34;
+    border-radius: 10px;
+    margin: auto;
+  }
+  .skill-box-2 {
+    width: 80%;
+    border: 1px solid #b6a986;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: #b6a986 0px 0px 10px;
+    background-color: #f2e1b2;
+    border-radius: 10px;
+    margin: auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20vh);
+  visibility: hidden;
+  transition: opacity 0.6s ease-out, transform 1.2s ease-out;
+  will-change: opacity, visibility;
+}
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
