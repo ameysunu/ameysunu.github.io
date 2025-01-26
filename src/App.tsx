@@ -1,24 +1,17 @@
-import React from "react";
-import Body from "./components/Body";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Projects from "./components/projects/Projects";
-import Blog from "./components/blog/Blog";
-import NotFound from "./components/NotFound";
-
 function App() {
+
   return (
-    <div>
-      <style>{"body { background-color: #F2E1B2; }"}</style>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Body />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/blog" element={<Blog />} />
-          < Route path="*" element = {<NotFound />}/>
-        </Routes>
-      </Router>
-    </div>
-  );
+    <>
+    <h1>
+      Hey there!
+    </h1>
+    <p>
+      Welcome to Amey's Portfolio. This page is currently being revamped as a part of my boredom schedule
+      <br />
+      However, you can still visit my old Portfolio <a href="google.com">here</a>. Thanks! 
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
