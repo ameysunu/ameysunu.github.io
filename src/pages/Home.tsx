@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 function Home(){
+
+    useEffect(() => {
+        console.log('%cAhh, a curious developer I see. Try not wandering into the dark side of the code. May the force be with you!', 'color: yellow;');
+    }, []);
 return (
     <div className="home">
         <h1 className="big-heading">
