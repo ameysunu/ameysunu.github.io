@@ -11,13 +11,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-  height: 100%;  /* Make sure the body takes up the full height */
+/* html, body {
+  height: 100%;
   display: flex;
-  justify-content: center;  /* Horizontally center */
-  align-items: center;  /* Vertically center */
+  justify-content: center; 
+  align-items: center; 
   font-family: 'Montserrat', sans-serif;
-}
+}  */
 
 @font-face {
   font-family: 'Montserrat'; 
@@ -38,5 +38,57 @@ a:hover {
   padding: 2px 6px;
   border-radius: 8px;
   background-color: #5b63b7;
+  color: white;
+}
+
+p {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.big-heading {
+  font-size: 100px;
+  margin: 0;
+}
+
+.mid-heading {
+  font-size: 80px;
+  color: #5b63b7;
+  margin: 0; 
+  position: relative;
+  font-weight: 600;
+}
+
+.mid-heading:hover {
+  color: yellow;
+}
+
+.home-text-center {
+  font-size: 1.2rem;
+  text-align: center;
+  word-break: break-word;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.system-null-ref {
+  color: #b5454b;
+  transition: all 0.3s ease; 
+}
+
+.system-null-ref:hover{
+  padding: 2px 6px;
+  border-radius: 8px;
+  background-color: #b5454b;
   color: white;
 }

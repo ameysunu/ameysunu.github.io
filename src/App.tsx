@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Holder from './Holder';
 import NotFound from './404';
+import Home from './pages/Home';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Holder />} />
+        <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />}/>
       </Routes>
     </Router>
