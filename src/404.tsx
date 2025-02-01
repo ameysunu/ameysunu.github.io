@@ -1,7 +1,7 @@
 // NotFound.js
 const NotFound = () => {
     return (
-      <div>
+      <div className="home">
         <h1 style={{ fontSize: '3rem', color: 'yellow' }}>
           404 - Page Not Found
         </h1>

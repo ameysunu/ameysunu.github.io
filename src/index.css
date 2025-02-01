@@ -51,7 +51,6 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   text-align: center;
 }
 
@@ -91,4 +90,31 @@ p {
   border-radius: 8px;
   background-color: #b5454b;
   color: white;
+}
+
+.header-row {
+  display: flex;
+  gap: 15px;
+  padding: 8px;
+  background-color: #2c2f49;
+  border-radius: 30px;
+  position: fixed;
+}
+
+.header-box {
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.header-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 6%;
+  padding-top: 5%;
 }
