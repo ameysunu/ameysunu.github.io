@@ -118,3 +118,13 @@ p {
   padding-bottom: 6%;
   padding-top: 5%;
 }
+
+.error-box {
+  background-color: #a04268;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.error-box-contents {
+  font-size: 1.2rem;
+}
