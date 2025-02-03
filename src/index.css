@@ -99,6 +99,7 @@ p {
   background-color: #2c2f49;
   border-radius: 30px;
   position: fixed;
+  z-index: 999;
 }
 
 .header-box {
@@ -149,4 +150,44 @@ p {
   align-items: center;
   text-align: center;
   height: 100vh;
+}
+
+.card-container {
+  display: flex;
+  gap: 5%;
+  padding: 4%;
+  border-radius: 30px;
+  position: relative;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.card-box-1, .card-box-2 {
+  background-color: #254d4c;
+  color: white;
+  padding: 20px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-box-2 {
+  background-color: #5b4135;
+}
+
+.card-heading-left {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.card-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.card-main-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
 }

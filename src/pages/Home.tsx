@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import { motion } from "motion/react"
+import phishtank from '../assets/phishtank.png';
+import innerbalance from '../assets/innerbalance.png';
 
 function Home() {
 
@@ -13,12 +15,12 @@ function Home() {
     return (
         <>
             <Header />
-            <div className="home">
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
-                    transition={{ duration: 0.5 }}
-                >
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div className="home">
                     <h1 className="big-heading">
                         Hey, I'm Amey
                         <p className="mid-heading">A Software Engineer.</p>
@@ -30,8 +32,25 @@ function Home() {
                             errors.
                         </p>
                     </h1>
-                </motion.div>
-            </div>
+                </div>
+
+                <div className="card-container">
+                    <div className="card-box-1">
+                        <div className="card-heading-left">
+                            <div className="card-main-heading">InnerBalance - Mental Wellbeing App</div>
+                            Swift, iOS, MongoDB
+                        </div>
+                        <img src={innerbalance} className="card-image"></img>
+                    </div>
+                    <div className="card-box-2">
+                        <div className="card-heading-left">
+                            <div className="card-main-heading">PhishTank</div>
+                            Swift, macOS, Google Gemini
+                        </div>
+                        <img src={phishtank} className="card-image"></img>
+                    </div>
+                </div>
+            </motion.div>
         </>
     );
 }
