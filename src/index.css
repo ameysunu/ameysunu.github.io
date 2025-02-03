@@ -127,7 +127,7 @@ p {
   padding: 10px 20px;
 }
 
-.header-box:hover{
+.header-box:hover:not(.active){
   background: none !important;
   padding: 10px 15px;
 }
