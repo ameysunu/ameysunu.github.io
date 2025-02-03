@@ -3,7 +3,8 @@ import Header from "./Header";
 import { motion } from "motion/react"
 import phishtank from '../assets/phishtank.png';
 import innerbalance from '../assets/innerbalance.png';
-
+import flutterwitai from '../assets/flutterwitai.png';
+import Footer from "./Footer";
 function Home() {
 
     const [isVisible, setIsVisible] = useState(false);
@@ -50,7 +51,18 @@ function Home() {
                         <img src={phishtank} className="card-image"></img>
                     </div>
                 </div>
+                <div className="card-container" style={{ paddingTop: "1%" }}>
+                    <div className="card-box-1" style={{ backgroundColor: "#3b4375" }}>
+                        <div className="card-heading-left">
+                            <div className="card-main-heading">Flutter X wit.ai integration</div>
+                            Flutter
+                        </div>
+                        <img src={flutterwitai} className="card-image"></img>
+                    </div>
+
+                </div>
             </motion.div>
+            <Footer />
         </>
     );
 }

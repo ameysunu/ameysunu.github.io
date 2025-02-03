@@ -191,3 +191,34 @@ p {
   font-size: 1.2rem;
   font-weight: 600;
 }
+
+.footer-container {
+  display: flex;
+  gap: 5%;
+  padding: 4%;
+  border-radius: 30px;
+  position: relative;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.footer-contact-text {
+  display: block;
+  padding: 10px 0px;
+  background: none !important;
+  color: white;
+  text-decoration: none;
+}
+
+.footer-contact-text:hover {
+  color: #5b63b7;
+  padding: 10px 0px;
+  background: none !important;
+}
