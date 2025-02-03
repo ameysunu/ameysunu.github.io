@@ -107,6 +107,7 @@ p {
   text-align: center;
   font-weight: 500;
   font-size: 1.2rem;
+  color: white;
 }
 
 .header-block {
@@ -117,6 +118,18 @@ p {
   text-align: center;
   padding-bottom: 6%;
   padding-top: 5%;
+  color: white;
+}
+
+.header-box.active {
+  background-color: #8084ad;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.header-box:hover{
+  background: none !important;
+  padding: 10px 15px;
 }
 
 .error-box {
