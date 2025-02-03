@@ -32,10 +32,10 @@ jobs:
       
       - name: Check if branch is master
         run: |
-          if [[ $GITHUB_REF == "refs/heads/master"]]; then
-            echo "VERCEL_PROJECT_ID = ${{ secrets.VERCEL_PROJECT_ID }}" >> $GITHUB_ENV
+          if [ "${GITHUB_REF}" == "refs/heads/master" ]; then
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }}" >> $GITHUB_ENV
           else
-            echo echo "VERCEL_PROJECT_ID = ${{ secrets.VERCEL_PROJECT_DEV_ID }}" >> $GITHUB_ENV
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_DEV_ID }}" >> $GITHUB_ENV
           fi
 
       - name: Deploy to Vercel Action
