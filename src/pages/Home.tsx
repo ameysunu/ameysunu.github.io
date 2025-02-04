@@ -4,6 +4,9 @@ import { motion } from "motion/react"
 import phishtank from '../assets/phishtank.png';
 import innerbalance from '../assets/innerbalance.png';
 import flutterwitai from '../assets/flutterwitai.png';
+import dataverse from '../assets/dataverse.webp';
+import cloudbackup from '../assets/cloudbackup.png';
+
 import Footer from "./Footer";
 function Home() {
 
@@ -62,6 +65,38 @@ function Home() {
 
                 </div>
             </motion.div>
+            <div className="home">
+                <h1 className="big-heading" style={{ color: "#5b63b7" }}>
+                    Work In Progress.
+                </h1>
+                <p className="home-text-center">
+                    Few of my side projects that I'm currently working on - iOS, .NET and others.
+                </p>
+            </div>
+
+            <br />
+
+            <div className="card-container" style={{ paddingTop: "2%" }}>
+                <div className="card-box-1" style={{ backgroundColor: "#743136" }}>
+                    <div className="card-heading-left">
+                        <div className="card-main-heading">Attribute Editor</div>
+                        .NET, Microsoft Dataverse
+                    </div>
+                    <img src={dataverse} className="card-image"></img>
+                </div>
+
+                <div className="card-box-1" style={{ backgroundColor: "#5c518a" }}>
+                    <div className="card-heading-left">
+                        <div className="card-main-heading">Cloud Backup</div>
+                        Swift, iOS, .NET, MongoDb
+                    </div>
+                    <img src={cloudbackup} className="card-image"></img>
+                </div>
+
+            </div>
+
+            <br />
+
             <Footer />
         </>
     );
