@@ -42,9 +42,9 @@ export default function About() {
                 </div>
                 <div style={{ padding: "2%" }}>
                     <div className="about-box">
-                        <p className="mid-heading" style={{ color: "white" }}>My Vision?</p>
+                        <p className="mid-heading" style={{ color: "white", padding: "2%" }}>My Vision?</p>
 
-                        <p style={{ fontSize: "1.25rem" }}>
+                        <p style={{ fontSize: "1.25rem", padding: "2%"  }}>
                             Building a powerful, cost effective, sustainable and scalable software solutions for enterprises and day to day user experiences to streamline
                             workflows, enhance productivity and unlock intelligent automations.
 
