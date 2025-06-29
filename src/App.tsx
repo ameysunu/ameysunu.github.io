@@ -3,6 +3,7 @@ import NotFound from './404';
 import Home from './pages/Home';
 import SystemCrash from './pages/SystemCrash';
 import About from './pages/About';
+import Stuff from './pages/Stuff';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="*" element={<NotFound />}/>
         <Route path="/about" element={<About />}/>
         <Route path="/system-crash" element={<SystemCrash />}/>
+        <Route path="/stuff" element={<Stuff />}/>
       </Routes>
     </Router>
   );
