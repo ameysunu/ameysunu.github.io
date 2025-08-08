@@ -24,11 +24,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Inject GTM tags (multiline-safe)
+      - name: Inject GTM tags (multiline-safe, debug)
         run: |
-          set -euo pipefail
+          set -eo pipefail  # no -u yet
 
-          if [ "${GITHUB_REF##*/}" = "master" ]; then
+          BRANCH='${{ github.ref_name }}'   # e.g. master or dev
+
+          # Initialize to avoid -u issues
+          HEAD_SECRET=""
+          BODY_SECRET=""
+
+          if [ "$BRANCH" = "master" ]; then
             HEAD_SECRET='${{ secrets.GTM_HEAD_STG_PRD }}'
             BODY_SECRET='${{ secrets.GTM_BODY_STG_PRD }}'
           else
@@ -36,14 +42,26 @@ jobs:
             BODY_SECRET='${{ secrets.GTM_BODY_DEV }}'
           fi
 
-          # Write to temp files
+          # Clear error if a secret is missing
+          if [ -z "$HEAD_SECRET" ]; then
+            echo "GTM head secret is empty for branch '$BRANCH'. Check your repo/org secrets." >&2
+            exit 1
+          fi
+          if [ -z "$BODY_SECRET" ]; then
+            echo "GTM body secret is empty for branch '$BRANCH'." >&2
+            exit 1
+          fi
+
           printf '%s' "$HEAD_SECRET" > /tmp/gtm_head.html
           printf '%s' "$BODY_SECRET" > /tmp/gtm_body.html
 
           echo "HEAD bytes: $(wc -c < /tmp/gtm_head.html)"
           echo "BODY bytes: $(wc -c < /tmp/gtm_body.html)"
 
-          HTML=index.html   # <-- Vite root. If CRA, use: public/index.html
+          HTML=index.html  # or public/index.html for CRA
+
+          # Now we can be strict
+          set -u
 
           replace_or_insert () {
             local placeholder="$1"
@@ -52,37 +70,19 @@ jobs:
 
             if grep -qF "$placeholder" "$HTML"; then
               awk -v SNIP="$snippet_file" -v PH="$placeholder" '
-                BEGIN{
-                  RS=ORS="";
-                  while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
-                }
+                BEGIN{ RS=ORS=""; while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP) }
                 { gsub(PH, snip); print }
               ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
-              echo "Replaced placeholder: $placeholder"
             else
-              # Fallback: inject before closing tag (case-insensitive via regex)
               awk -v SNIP="$snippet_file" -v TAGREGEX="$tag_regex" '
-                BEGIN{
-                  RS=ORS="";
-                  while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
-                }
-                {
-                  gsub(TAGREGEX, snip "&");
-                  print
-                }
+                BEGIN{ RS=ORS=""; while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP) }
+                { gsub(TAGREGEX, snip "&"); print }
               ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
-              echo "Inserted before close tag: $tag_regex"
             fi
           }
 
-          # Do head (case-insensitive regex), then body
           replace_or_insert "<!-- GTM_HEAD_PLACEHOLDER -->" /tmp/gtm_head.html "</[Hh][Ee][Aa][Dd]>"
           replace_or_insert "<!-- GTM_BODY_PLACEHOLDER -->" /tmp/gtm_body.html "</[Bb][Oo][Dd][Yy]>"
-
-          echo "---- HEAD preview ----"
-          sed -n '1,80p' "$HTML" | sed -n '1,80p'
-          echo "---- BODY preview ----"
-          sed -n '80,200p' "$HTML" | sed -n '80,200p'
 
 
       - name: Build Project
