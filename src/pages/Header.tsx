@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom"
 
-export default function Header() {
+type HeaderProps = {
+    onContactClick: () => void;
+};
+
+export default function Header({ onContactClick }: HeaderProps) {
 
     return (
         <div className={`header-block`}>
@@ -9,8 +13,8 @@ export default function Header() {
                 <NavLink to ="/about" className="header-box ">About</NavLink>
                 <NavLink to ="/stuff" className="header-box ">Stuff</NavLink>
                 <NavLink to ="/under-construction" className="header-box ">Blog</NavLink>
-                <NavLink to ="/contact" className="header-box ">Contact</NavLink>
+                <a onClick={onContactClick} className="header-box" style={{ cursor: "pointer"}}> Contact </a>
             </div>
         </div>
     );
-}
+} 
