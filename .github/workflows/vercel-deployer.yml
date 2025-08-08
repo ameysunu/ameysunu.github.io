@@ -24,50 +24,39 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Inject GTM tags (multiline-safe, debug)
+      - name: Inject GTM tags (multiline-safe)
+        env:
+          HEAD_DEV: ${{ secrets.GTM_HEAD_DEV }}
+          BODY_DEV: ${{ secrets.GTM_BODY_DEV }}
+          HEAD_PRD: ${{ secrets.GTM_HEAD_STG_PRD }}
+          BODY_PRD: ${{ secrets.GTM_BODY_STG_PRD }}
         run: |
-          set -eo pipefail  # no -u yet
+          set -eo pipefail
 
-          BRANCH='${{ github.ref_name }}'   # e.g. master or dev
-
-          # Initialize to avoid -u issues
-          HEAD_SECRET=""
-          BODY_SECRET=""
+          BRANCH='${{ github.ref_name }}'
 
           if [ "$BRANCH" = "master" ]; then
-            HEAD_SECRET='${{ secrets.GTM_HEAD_STG_PRD }}'
-            BODY_SECRET='${{ secrets.GTM_BODY_STG_PRD }}'
+            HEAD_SECRET="$HEAD_PRD"
+            BODY_SECRET="$BODY_PRD"
           else
-            HEAD_SECRET='${{ secrets.DEV_GTM_HEAD }}'
-            BODY_SECRET='${{ secrets.GTM_BODY_DEV }}'
+            HEAD_SECRET="$HEAD_DEV"
+            BODY_SECRET="$BODY_DEV"
           fi
 
-          # Clear error if a secret is missing
-          if [ -z "$BODY_SECRET" ]; then
-            echo "GTM body secret is empty for branch '$BRANCH'." >&2
-            exit 1
-          fi
+          # Sanity check
+          [ -n "$HEAD_SECRET" ] || { echo "GTM head secret empty for $BRANCH"; exit 1; }
+          [ -n "$BODY_SECRET" ] || { echo "GTM body secret empty for $BRANCH"; exit 1; }
 
-          if [ -z "$HEAD_SECRET" ]; then
-            echo "GTM head secret is empty for branch '$BRANCH'. Check your repo/org secrets." >&2
-            exit 1
-          fi
-
+          # Write exact bytes (handles quotes/newlines fine)
           printf '%s' "$HEAD_SECRET" > /tmp/gtm_head.html
           printf '%s' "$BODY_SECRET" > /tmp/gtm_body.html
 
-          echo "HEAD bytes: $(wc -c < /tmp/gtm_head.html)"
-          echo "BODY bytes: $(wc -c < /tmp/gtm_body.html)"
-
-          HTML=index.html  # or public/index.html for CRA
-
-          # Now we can be strict
-          set -u
+          HTML=index.html 
 
           replace_or_insert () {
             local placeholder="$1"
             local snippet_file="$2"
-            local tag_regex="$3"   # e.g. </[Hh][Ee][Aa][Dd]>
+            local tag_regex="$3"
 
             if grep -qF "$placeholder" "$HTML"; then
               awk -v SNIP="$snippet_file" -v PH="$placeholder" '
