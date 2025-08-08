@@ -24,6 +24,22 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Inject GTM tags
+        run: |
+          if [ "${GITHUB_REF##*/}" = "master" ]; then
+            GTM_HEAD="${{ secrets.GTM_HEAD_STG_PRD }}"
+            GTM_BODY="${{ secrets.GTM_BODY_STG_PRD }}"
+          else
+            GTM_HEAD="${{ secrets.GTM_HEAD_DEV }}"
+            GTM_BODY="${{ secrets.GTM_BODY_DEV }}"
+          fi
+
+          # Replace placeholders
+          sed -i "s|<!-- GTM_HEAD_PLACEHOLDER -->|${GTM_HEAD}|" public/index.html
+
+          sed -i "s|<!-- GTM_BODY_PLACEHOLDER -->|${GTM_BODY}|" public/index.html
+
+
       - name: Build Project
         run: npm run build
 
