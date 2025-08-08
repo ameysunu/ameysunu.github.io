@@ -10,6 +10,7 @@ export default function Construction() {
         <p style={{ fontSize: '1rem'}}>
           The force is not strong with this page. Our droids and Jedi knights are currently working to get this back up and running. 
           <br />
+          <br />
           <strong>May the force be with you.</strong>
         </p>
       </div>
