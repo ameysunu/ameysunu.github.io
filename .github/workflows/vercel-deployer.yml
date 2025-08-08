@@ -29,44 +29,61 @@ jobs:
           set -euo pipefail
 
           if [ "${GITHUB_REF##*/}" = "master" ]; then
-            printf '%s' '${{ secrets.GTM_HEAD_STG_PRD }}' > /tmp/gtm_head.html
-            printf '%s' '${{ secrets.GTM_BODY_STG_PRD }}' > /tmp/gtm_body.html
+            HEAD_SECRET='${{ secrets.GTM_HEAD_STG_PRD }}'
+            BODY_SECRET='${{ secrets.GTM_BODY_STG_PRD }}'
           else
-            printf '%s' '${{ secrets.GTM_HEAD_DEV }}' > /tmp/gtm_head.html
-            printf '%s' '${{ secrets.GTM_BODY_DEV }}' > /tmp/gtm_body.html
+            HEAD_SECRET='${{ secrets.GTM_HEAD_DEV }}'
+            BODY_SECRET='${{ secrets.GTM_BODY_DEV }}'
           fi
-          
-          HTML=index.html
+
+          # Write to temp files
+          printf '%s' "$HEAD_SECRET" > /tmp/gtm_head.html
+          printf '%s' "$BODY_SECRET" > /tmp/gtm_body.html
+
+          echo "HEAD bytes: $(wc -c < /tmp/gtm_head.html)"
+          echo "BODY bytes: $(wc -c < /tmp/gtm_body.html)"
+
+          HTML=index.html   # <-- Vite root. If CRA, use: public/index.html
 
           replace_or_insert () {
             local placeholder="$1"
             local snippet_file="$2"
-            local before_tag="$3"
+            local tag_regex="$3"   # e.g. </[Hh][Ee][Aa][Dd]>
 
             if grep -qF "$placeholder" "$HTML"; then
               awk -v SNIP="$snippet_file" -v PH="$placeholder" '
-              BEGIN{
-                RS=ORS="";
-                while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
-              }
-              { gsub(PH, snip); print }
+                BEGIN{
+                  RS=ORS="";
+                  while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
+                }
+                { gsub(PH, snip); print }
               ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+              echo "Replaced placeholder: $placeholder"
             else
-              awk -v SNIP="$snippet_file" -v TAG="$before_tag" '
-              BEGIN{
-                RS=ORS="";
-                while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
-              }
-              {
-                gsub(TAG, snip TAG);
-                print
-              }
+              # Fallback: inject before closing tag (case-insensitive via regex)
+              awk -v SNIP="$snippet_file" -v TAGREGEX="$tag_regex" '
+                BEGIN{
+                  RS=ORS="";
+                  while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
+                }
+                {
+                  gsub(TAGREGEX, snip "&");
+                  print
+                }
               ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+              echo "Inserted before close tag: $tag_regex"
             fi
           }
 
-          replace_or_insert "<!-- GTM_HEAD_PLACEHOLDER -->" /tmp/gtm_head.html "</head>"
-          replace_or_insert "<!-- GTM_BODY_PLACEHOLDER -->" /tmp/gtm_body.html "</body>"
+          # Do head (case-insensitive regex), then body
+          replace_or_insert "<!-- GTM_HEAD_PLACEHOLDER -->" /tmp/gtm_head.html "</[Hh][Ee][Aa][Dd]>"
+          replace_or_insert "<!-- GTM_BODY_PLACEHOLDER -->" /tmp/gtm_body.html "</[Bb][Oo][Dd][Yy]>"
+
+          echo "---- HEAD preview ----"
+          sed -n '1,80p' "$HTML" | sed -n '1,80p'
+          echo "---- BODY preview ----"
+          sed -n '80,200p' "$HTML" | sed -n '80,200p'
+
 
       - name: Build Project
         run: npm run build
