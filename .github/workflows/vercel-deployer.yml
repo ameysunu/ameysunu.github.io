@@ -24,21 +24,33 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Inject GTM tags
+      - name: Inject GTM tags (multiline-safe)
         run: |
+          set -euo pipefail
+
+          # Pick secrets per branch
           if [ "${GITHUB_REF##*/}" = "master" ]; then
-            GTM_HEAD="${{ secrets.GTM_HEAD_STG_PRD }}"
-            GTM_BODY="${{ secrets.GTM_BODY_STG_PRD }}"
+            printf '%s' '${{ secrets.GTM_HEAD_STG_PRD }}' > /tmp/gtm_head.html
+            printf '%s' '${{ secrets.GTM_BODY_STG_PRD }}' > /tmp/gtm_body.html
           else
-            GTM_HEAD="${{ secrets.GTM_HEAD_DEV }}"
-            GTM_BODY="${{ secrets.GTM_BODY_DEV }}"
+            printf '%s' '${{ secrets.GTM_HEAD_DEV }}' > /tmp/gtm_head.html
+            printf '%s' '${{ secrets.GTM_BODY_DEV }}' > /tmp/gtm_body.html
           fi
 
-          # Replace placeholders
-          sed -i "s|<!-- GTM_HEAD_PLACEHOLDER -->|${GTM_HEAD}|" public/index.html
+          HTML=index.html
 
-          sed -i "s|<!-- GTM_BODY_PLACEHOLDER -->|${GTM_BODY}|" public/index.html
+          awk -v HEADFILE=/tmp/gtm_head.html -v BODYFILE=/tmp/gtm_body.html '
+            BEGIN{
+              RS=ORS="";
+              while ((getline l < HEADFILE) > 0) head=head l "\n"; close(HEADFILE);
+              while ((getline l < BODYFILE) > 0) body=body l "\n"; close(BODYFILE);
+            }
+            { gsub("<!-- GTM_HEAD_PLACEHOLDER -->", head);
+              gsub("<!-- GTM_BODY_PLACEHOLDER -->", body);
+              print;
+            }' "$HTML" > "$HTML.tmp"
 
+          mv "$HTML.tmp" "$HTML"
 
       - name: Build Project
         run: npm run build
