@@ -43,12 +43,13 @@ jobs:
           fi
 
           # Clear error if a secret is missing
-          if [ -z "$HEAD_SECRET" ]; then
-            echo "GTM head secret is empty for branch '$BRANCH'. Check your repo/org secrets." >&2
-            exit 1
-          fi
           if [ -z "$BODY_SECRET" ]; then
             echo "GTM body secret is empty for branch '$BRANCH'." >&2
+            exit 1
+          fi
+
+          if [ -z "$HEAD_SECRET" ]; then
+            echo "GTM head secret is empty for branch '$BRANCH'. Check your repo/org secrets." >&2
             exit 1
           fi
 
