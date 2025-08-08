@@ -1,4 +1,3 @@
-import Header from "./Header";
 import GitHubProjects from "../components/projects/GitHubProjects";
 import Footer from "./Footer";
 import LightspeedBackground from "../components/projects/LightspeedBackground";
@@ -8,7 +7,6 @@ export default function Stuff() {
         <div className="stuff-container">
             <LightspeedBackground />
             <div className="stuff-content">
-                <Header />
                 <div className="home">
                     <h1 className="mid-heading" style={{fontWeight: 'bold'}}>
                         Jump to Light Speed!

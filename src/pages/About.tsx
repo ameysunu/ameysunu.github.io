@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import Header from "./Header";
 import { useEffect, useState } from "react";
 import cat from '../assets/cat.gif';
 import Footer from "./Footer";
@@ -14,7 +13,6 @@ export default function About() {
 
     return (
         <div>
-            <Header />
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "./Header";
 import { motion } from "motion/react"
 import phishtank from '../assets/phishtank.png';
 import innerbalance from '../assets/innerbalance.png';
@@ -18,7 +17,6 @@ function Home() {
     }, []);
     return (
         <>
-            <Header />
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -20 }}
