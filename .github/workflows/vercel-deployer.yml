@@ -38,7 +38,7 @@ jobs:
             HEAD_SECRET='${{ secrets.GTM_HEAD_STG_PRD }}'
             BODY_SECRET='${{ secrets.GTM_BODY_STG_PRD }}'
           else
-            HEAD_SECRET='${{ secrets.GTM_HEAD_DEV }}'
+            HEAD_SECRET='${{ secrets.DEV_GTM_HEAD }}'
             BODY_SECRET='${{ secrets.GTM_BODY_DEV }}'
           fi
 
