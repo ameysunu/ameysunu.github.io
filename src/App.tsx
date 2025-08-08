@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import SystemCrash from './pages/SystemCrash';
 import About from './pages/About';
 import Stuff from './pages/Stuff';
+import Construction from './pages/Construction';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/about" element={<About />}/>
         <Route path="/system-crash" element={<SystemCrash />}/>
         <Route path="/stuff" element={<Stuff />}/>
+        <Route path = '/under-construction' element = {<Construction />} />
       </Routes>
     </Router>
   );
