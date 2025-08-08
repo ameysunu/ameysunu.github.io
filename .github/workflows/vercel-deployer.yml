@@ -28,7 +28,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Pick secrets per branch
           if [ "${GITHUB_REF##*/}" = "master" ]; then
             printf '%s' '${{ secrets.GTM_HEAD_STG_PRD }}' > /tmp/gtm_head.html
             printf '%s' '${{ secrets.GTM_BODY_STG_PRD }}' > /tmp/gtm_body.html
@@ -36,21 +35,38 @@ jobs:
             printf '%s' '${{ secrets.GTM_HEAD_DEV }}' > /tmp/gtm_head.html
             printf '%s' '${{ secrets.GTM_BODY_DEV }}' > /tmp/gtm_body.html
           fi
-
+          
           HTML=index.html
 
-          awk -v HEADFILE=/tmp/gtm_head.html -v BODYFILE=/tmp/gtm_body.html '
-            BEGIN{
-              RS=ORS="";
-              while ((getline l < HEADFILE) > 0) head=head l "\n"; close(HEADFILE);
-              while ((getline l < BODYFILE) > 0) body=body l "\n"; close(BODYFILE);
-            }
-            { gsub("<!-- GTM_HEAD_PLACEHOLDER -->", head);
-              gsub("<!-- GTM_BODY_PLACEHOLDER -->", body);
-              print;
-            }' "$HTML" > "$HTML.tmp"
+          replace_or_insert () {
+            local placeholder="$1"
+            local snippet_file="$2"
+            local before_tag="$3"
 
-          mv "$HTML.tmp" "$HTML"
+            if grep -qF "$placeholder" "$HTML"; then
+              awk -v SNIP="$snippet_file" -v PH="$placeholder" '
+              BEGIN{
+                RS=ORS="";
+                while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
+              }
+              { gsub(PH, snip); print }
+              ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+            else
+              awk -v SNIP="$snippet_file" -v TAG="$before_tag" '
+              BEGIN{
+                RS=ORS="";
+                while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP);
+              }
+              {
+                gsub(TAG, snip TAG);
+                print
+              }
+              ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+            fi
+          }
+
+          replace_or_insert "<!-- GTM_HEAD_PLACEHOLDER -->" /tmp/gtm_head.html "</head>"
+          replace_or_insert "<!-- GTM_BODY_PLACEHOLDER -->" /tmp/gtm_body.html "</body>"
 
       - name: Build Project
         run: npm run build
