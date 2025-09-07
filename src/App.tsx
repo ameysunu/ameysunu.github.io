@@ -8,6 +8,7 @@ import SystemCrash from './pages/SystemCrash';
 import About from './pages/About';
 import Stuff from './pages/Stuff';
 import Construction from './pages/Construction';
+import Banner from './pages/Banner';
 
 const App = () => {
 
@@ -18,6 +19,7 @@ const App = () => {
 
   return (
     <Router>
+      <Banner />
       <Header onContactClick={toggleChatbot} />
       <Routes>
         <Route path="/" element={<Home />} />
