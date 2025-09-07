@@ -35,12 +35,13 @@ jobs:
           force_orphan: true
           cname: ameys.eu
 
-      - name: Copy static.yml into gh-pages
+      - name: Copy workflow file into gh-pages
         run: |
           git fetch origin gh-pages
           git checkout gh-pages
           mkdir -p .github/workflows
-          cp .github/workflows/static.yml .github/workflows/static.yml
+          
+          git checkout master -- .github/workflows/static.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .github/workflows/static.yml
