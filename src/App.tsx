@@ -9,6 +9,7 @@ import About from './pages/About';
 import Stuff from './pages/Stuff';
 import Construction from './pages/Construction';
 // import Banner from './pages/Banner';
+import BackgroundDecor from './components/BackgroundDecor';
 
 const App = () => {
 
@@ -20,6 +21,7 @@ const App = () => {
   return (
     <Router>
       {/* <Banner /> */}
+      <BackgroundDecor />
       <Header onContactClick={toggleChatbot} />
       <Routes>
         <Route path="/" element={<Home />} />
