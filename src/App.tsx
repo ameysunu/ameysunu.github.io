@@ -10,6 +10,7 @@ import Stuff from './pages/Stuff';
 import Construction from './pages/Construction';
 // import Banner from './pages/Banner';
 import BackgroundDecor from './components/BackgroundDecor';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
 
@@ -21,6 +22,7 @@ const App = () => {
   return (
     <Router>
       {/* <Banner /> */}
+      <ScrollToTop />
       <BackgroundDecor />
       <Header onContactClick={toggleChatbot} />
       <Routes>
