@@ -30,8 +30,8 @@ export default function BackgroundDecor() {
       >
         <defs>
           <linearGradient id="bgGrad2" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#2c2f49" stopOpacity="0.20" />
-            <stop offset="100%" stopColor="#5b63b7" stopOpacity="0.15" />
+            <stop offset="0%" stopColor="#2c2f49" stopOpacity="0.50" />
+            <stop offset="100%" stopColor="#5b63b7" stopOpacity="0.30" />
           </linearGradient>
         </defs>
         <circle
