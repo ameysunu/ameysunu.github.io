@@ -28,36 +28,33 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
                 id: 1,
                 text: "Hi! I'm Amey's bot. He built me in his basement. Naah, just kidding! I'm here to help you with any questions you have about Amey's work or interests.",
                 sender: 'bot'
-            }, {
-                id: 2,
-                text: "Just simply type in keywords like 'hello', 'contact', 'hobby', or 'tech' to get started.",
-                sender: 'bot'
             }]);
         }
     }, [isOpen, messages.length]);
 
-    const handleSendMessage = (): void => {
-        if (inputValue.trim() === '') return;
-        const userMessage: Message = { id: Date.now(), text: inputValue, sender: 'user' };
+    const sendMessage = (text: string): void => {
+        const clean = text.trim();
+        if (clean === '') return;
+        const userMessage: Message = { id: Date.now(), text: clean, sender: 'user' };
         setMessages(prev => [...prev, userMessage]);
-        setInputValue('');
         setIsTyping(true);
         setTimeout(() => {
-            const botResponseText = getBotResponse(inputValue);
+            const botResponseText = getBotResponse(clean);
             const botMessage: Message = { id: Date.now() + 1, text: botResponseText, sender: 'bot' };
             setMessages(prev => [...prev, botMessage]);
             setIsTyping(false);
         }, 1500 + Math.random() * 500);
     };
 
+    const handleQuickReply = (text: string): void => {
+        sendMessage(text);
+    };
+
     const getBotResponse = (userInput: string): string => {
         const lcInput = userInput.toLowerCase();
-        if (lcInput.includes('hello') || lcInput.includes('hi') || lcInput.includes('hey')) return "Hi there! What can I do for you?";
-        if (lcInput.includes('service')) return "So, yeah Amey can help you with iOS development, backend solutions, and even some DevOps magic. Just ask!";
-        if (lcInput.includes('hobby')) return "In my free time, you'll find me playing video games, exploring new tech, or just chilling with a pint.";
-        if (lcInput.includes('magic')) return "Ohhh okay! So, I'm built with React and TypeScript, and I can help you with questions about Amey's work, interests, or even just to chat! Here's the real magic: Amey built me with lot of bugs and help from ChatGPT. So, if you find any bugs, just let him know!";
-        if (lcInput.includes('bye') || lcInput.includes('thank')) return "You're welcome! Feel free to reach out anytime. Have a great day!";
-        if (lcInput.includes('tech')) return "Okay tech! I love tech and so does Amey. He works with Swift for iOS/macOS, .NET and Golang for backend, and is diving into Generative AI. If you want to know more about his tech stack, just give him a shout!";
+        if (lcInput.includes('hello') || lcInput.includes('hi') || lcInput.includes('hey')) return "Hello! Hope you liked this portfolio. This portfolio is like a minefield of bugs.";
+        if (lcInput.includes('help')) return "So, yeah Amey can help you with iOS development, backend solutions in .NET/C# or Golang, and even some DevOps magic.! Just reach out to him via Github";
+        if (lcInput.includes('tech')) return "Okay tech! I love tech and so does Amey. He works with Swift for iOS/macOS, .NET and Golang for backend, and is diving into Generative AI.";
         if (lcInput.includes('contact')) return "You can contact Amey via email at amey.sunu13@gmail.com or open an issue at his Github repository. You can find that on the footer of this page."; 
 
         return "Sorry, I didn't quite understand that. Could you rephrase? You can ask about services, hobbies, or tech.";
@@ -97,17 +94,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="input-area">
-                    <div className="input-wrapper">
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            placeholder="Type a message..."
-                        />
-                        <button onClick={handleSendMessage} disabled={!inputValue.trim()}>
-                            <SendIcon />
-                        </button>
+                    <div className="quick-replies">
+                        <button className="quick-reply" onClick={() => handleQuickReply('hello')}>Just saying hello!</button>
+                        <button className="quick-reply" onClick={() => handleQuickReply('help')}>What can Amey help with?</button>
+                        <button className="quick-reply" onClick={() => handleQuickReply('tech')}>Tech stuff Amey is involved with</button>
+                        <button className="quick-reply" onClick={() => handleQuickReply('contact')}>Get in touch</button>
                     </div>
                 </div>
             </div>
