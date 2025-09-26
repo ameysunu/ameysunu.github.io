@@ -8,6 +8,7 @@ import SystemCrash from './pages/SystemCrash';
 import About from './pages/About';
 import Stuff from './pages/Stuff';
 import Construction from './pages/Construction';
+import Blogs from './pages/Blogs';
 // import Banner from './pages/Banner';
 import BackgroundDecor from './components/BackgroundDecor';
 import ScrollToTop from './components/ScrollToTop';
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/about" element={<About />}/>
         <Route path="/system-crash" element={<SystemCrash />}/>
         <Route path="/stuff" element={<Stuff />}/>
+        <Route path="/blogs" element={<Blogs />} />
         <Route path = '/under-construction' element = {<Construction />} />
       </Routes>
       <Chatbot isOpen={isChatbotOpen} onClose={toggleChatbot} />
