@@ -48,7 +48,7 @@ export default function Blogs() {
                 Redirecting to blogs.ameys.eu in {countdown}...
             </p>
             <p style={{ fontSize: "1rem", maxWidth: "520px" }}>
-                Redirecting to blogs.ameys.eu in 5..4...3..2...1. If you're not automatically redirected <a href={BLOG_URL}>click here</a>.
+                If you're not automatically redirected <a href={BLOG_URL}>click here</a>.
             </p>
             <button className="redirect-button" onClick={handleRedirect}>
                 Go to Amey's Blogs
