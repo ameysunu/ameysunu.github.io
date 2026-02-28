@@ -1,43 +1,20 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './pages/Header';
-import Chatbot from './pages/Chatbot';
+import Home from './Home';
+import About from './About';
 import NotFound from './404';
-import Home from './pages/Home';
-import SystemCrash from './pages/SystemCrash';
-import About from './pages/About';
-import Stuff from './pages/Stuff';
-import Construction from './pages/Construction';
-import Blogs from './pages/Blogs';
-// import Banner from './pages/Banner';
-import BackgroundDecor from './components/BackgroundDecor';
-import ScrollToTop from './components/ScrollToTop';
 
-const App = () => {
-
-  const [isChatbotOpen, setChatbotOpen] = useState(false);
-  const toggleChatbot = () => {
-    setChatbotOpen(!isChatbotOpen);
-  };
-
+function App() {
   return (
+    <>
     <Router>
-      {/* <Banner /> */}
-      <ScrollToTop />
-      <BackgroundDecor />
-      <Header onContactClick={toggleChatbot} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="*" element={<NotFound />}/>
-        <Route path="/about" element={<About />}/>
-        <Route path="/system-crash" element={<SystemCrash />}/>
-        <Route path="/stuff" element={<Stuff />}/>
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path = '/under-construction' element = {<Construction />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
-      <Chatbot isOpen={isChatbotOpen} onClose={toggleChatbot} />
     </Router>
-  );
-};
+    </>
+  )
+}
 
-export default App;
+export default App

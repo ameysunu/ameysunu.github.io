@@ -1,18 +1,28 @@
-// NotFound.js
-const NotFound = () => {
+function NotFound() {
+    const path = window.location.pathname;
+
     return (
-      <div className="not-found">
-        <h1 style={{ fontSize: '3rem', color: 'yellow' }}>
-          404 - Page Not Found
-        </h1>
-        <p style={{ fontSize: '1rem'}}>
-          The page you're looking for has gone to a galaxy far, far away. Please check the URL or head back to the homepage.
-          <br />
-          <strong>May the force be with you.</strong>
-        </p>
-      </div>
+        <div className="nf-center">
+        <div className="title">404</div>
+        <div className="subtitle">you're lost, mate</div>
+        <br />
+
+        <div className="nf-stack" style={{marginTop: '1rem'}}>
+            <div className="nf-stack-item">
+                <span className="nf-stack-label">error</span>
+                <span className="nf-stack-value">page not found</span>
+            </div>
+            <div className="nf-stack-item">
+                <span className="nf-stack-label">url</span>
+                <span className="nf-stack-value">{path}</span>
+            </div>
+            <div className="nf-stack-item">
+                <span className="nf-stack-label">fix</span>
+                <a href="/" className="cb-bar-link nf-stack-value">go back home</a>
+            </div>
+        </div>
+        </div>
     );
-  };
-  
-  export default NotFound;
-  
+}
+
+export default NotFound;
