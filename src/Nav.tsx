@@ -29,8 +29,9 @@ export default function Nav() {
     return (
         <div className="nav-wrapper">
             <div className="nav-links">
+                <a href="/" className="nav-link">home</a>
                 <a href="https://blogs.ameys.eu" className="nav-link">blog</a>
-                <div>about</div>
+                <a href="/about" className="nav-link">about</a>
             </div>
             <div onClick={() => setIsDark(prev => !prev)} className="nav-theme-toggle">
                 {isDark ? <LightMode /> : <DarkMode />}
