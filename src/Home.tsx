@@ -8,7 +8,7 @@ function Home() {
         <div className="subtitle" style={{fontSize: '1.2rem', fontWeight: '500'}}>this is what i'm currently upto</div>
         <div className="cb-bar" style={{marginTop: '1rem'}}>
             <span className="cb-bar-label">building</span>
-            <span className="cb-bar-value">lisaos — an operating system built in c</span>
+            <span className="cb-bar-value">lisaos : an operating system built in c</span>
         </div>
         <div className="cb-bar">
             <span className="cb-bar-label">learning</span>

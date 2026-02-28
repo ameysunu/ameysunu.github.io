@@ -6,7 +6,6 @@ function NotFound() {
         <div className="title">404</div>
         <div className="subtitle">you're lost, mate</div>
         <br />
-        <div className="subtitle" style={{fontSize: '1.2rem', fontWeight: '500'}}>here's what went wrong</div>
 
         <div className="nf-stack" style={{marginTop: '1rem'}}>
             <div className="nf-stack-item">
