@@ -1,0 +1,98 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Inject GTM tags (multiline-safe)
+        env:
+          HEAD_DEV: ${{ secrets.GTM_HEAD_DEV }}
+          BODY_DEV: ${{ secrets.GTM_BODY_DEV }}
+          HEAD_PRD: ${{ secrets.GTM_HEAD_STG_PRD }}
+          BODY_PRD: ${{ secrets.GTM_BODY_STG_PRD }}
+        run: |
+          set -eo pipefail
+
+          BRANCH='${{ github.ref_name }}'
+
+          if [ "$BRANCH" = "master" ]; then
+            HEAD_SECRET="$HEAD_PRD"
+            BODY_SECRET="$BODY_PRD"
+          else
+            HEAD_SECRET="$HEAD_DEV"
+            BODY_SECRET="$BODY_DEV"
+          fi
+
+          # Sanity check
+          [ -n "$HEAD_SECRET" ] || { echo "GTM head secret empty for $BRANCH"; exit 1; }
+          [ -n "$BODY_SECRET" ] || { echo "GTM body secret empty for $BRANCH"; exit 1; }
+
+          # Write exact bytes (handles quotes/newlines fine)
+          printf '%s' "$HEAD_SECRET" > /tmp/gtm_head.html
+          printf '%s' "$BODY_SECRET" > /tmp/gtm_body.html
+
+          HTML=index.html 
+
+          replace_or_insert () {
+            local placeholder="$1"
+            local snippet_file="$2"
+            local tag_regex="$3"
+
+            if grep -qF "$placeholder" "$HTML"; then
+              awk -v SNIP="$snippet_file" -v PH="$placeholder" '
+                BEGIN{ RS=ORS=""; while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP) }
+                { gsub(PH, snip); print }
+              ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+            else
+              awk -v SNIP="$snippet_file" -v TAGREGEX="$tag_regex" '
+                BEGIN{ RS=ORS=""; while ((getline l < SNIP) > 0) snip=snip l "\n"; close(SNIP) }
+                { gsub(TAGREGEX, snip "&"); print }
+              ' "$HTML" > "$HTML.tmp" && mv "$HTML.tmp" "$HTML"
+            fi
+          }
+
+          replace_or_insert "<!-- GTM_HEAD_PLACEHOLDER -->" /tmp/gtm_head.html "</[Hh][Ee][Aa][Dd]>"
+          replace_or_insert "<!-- GTM_BODY_PLACEHOLDER -->" /tmp/gtm_body.html "</[Bb][Oo][Dd][Yy]>"
+
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      
+      - name: Check if branch is master
+        run: |
+          if [ "${GITHUB_REF}" == "refs/heads/master" ]; then
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_ID }}" >> $GITHUB_ENV
+          else
+            echo "VERCEL_PROJECT_ID=${{ secrets.VERCEL_PROJECT_DEV_ID }}" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy to Vercel Action
+        uses: BetaHuhn/deploy-to-vercel-action@v1.10.0
+        with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}

@@ -1,0 +1,49 @@
+name: Deploy GitHub Pages 
+
+on:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - run: npm run build
+
+      - run: cp dist/index.html dist/404.html
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          publish_branch: gh-pages
+          force_orphan: true
+          cname: ameys.eu
+
+      - name: Copy workflow file into gh-pages
+        run: |
+          git fetch origin gh-pages
+          git checkout gh-pages
+          mkdir -p .github/workflows
+          
+          git checkout master -- .github/workflows/static.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/static.yml
+          git commit -m "chore: add workflow to gh-pages" || echo "No changes"
+          git push origin gh-pages
