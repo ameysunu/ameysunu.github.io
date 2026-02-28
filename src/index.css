@@ -30,7 +30,7 @@
 .subtitle {
   font-size: 30px;
   margin-bottom: 1rem;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .theme-toggle {
@@ -144,7 +144,7 @@
   line-height: 1.8;
   max-width: 540px;
   opacity: 0.85;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 .about-opener {
