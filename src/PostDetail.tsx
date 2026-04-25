@@ -1,30 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { PortableText, type PortableTextComponents } from '@portabletext/react';
 import Slab from './primitives/Slab';
 import Star from './primitives/Star';
 import Sticker from './primitives/Sticker';
 import NotFound from './404';
 import {
-  fetchBlogs,
   formatDate,
   readingTime,
   deriveKind,
+  KIND_BG,
+  KIND_INK,
   type Blog as BlogPost,
-  type PostKind,
 } from './api/blogs';
-
-const KIND_BG: Record<PostKind, string> = {
-  log: 'var(--accent)',
-  rant: 'var(--ink)',
-  note: 'var(--paper)',
-};
-
-const KIND_INK: Record<PostKind, string> = {
-  log: 'var(--ink)',
-  rant: 'var(--bg)',
-  note: 'var(--ink)',
-};
+import { usePosts } from './hooks/usePosts';
 
 const ptComponents: PortableTextComponents = {
   marks: {
@@ -42,27 +30,7 @@ const ptComponents: PortableTextComponents = {
 
 export default function PostDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const [posts, setPosts] = useState<BlogPost[] | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchBlogs()
-      .then((items) => {
-        if (cancelled) return;
-        const sorted = [...items].sort(
-          (a, b) => +new Date(b.published) - +new Date(a.published)
-        );
-        setPosts(sorted);
-      })
-      .catch((e) => {
-        if (cancelled) return;
-        setErr(String(e?.message ?? e));
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { posts, err } = usePosts();
 
   if (err) return <StateNotice>couldn&rsquo;t fetch post — {err}</StateNotice>;
   if (!posts) return <StateNotice>fetching…</StateNotice>;
@@ -78,24 +46,7 @@ export default function PostDetail() {
   return (
     <div style={{ display: 'grid', gap: 22 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-        <Link
-          to="/blog"
-          className="mono"
-          style={{
-            textDecoration: 'none',
-            background: 'var(--paper)',
-            color: 'var(--ink)',
-            border: 'var(--border) solid var(--rule)',
-            boxShadow: '4px 4px 0 0 var(--rule)',
-            padding: '8px 14px',
-            fontSize: 12,
-            fontWeight: 700,
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            display: 'inline-flex',
-            alignItems: 'center',
-          }}
-        >
+        <Link to="/blog" className="back-btn mono">
           ← back to blog
         </Link>
         <span className="caption">/blog / {post.slug}</span>
@@ -143,13 +94,7 @@ export default function PostDetail() {
               {post.tags.map((t) => (
                 <span
                   key={t}
-                  className="mono caption"
-                  style={{
-                    padding: '4px 10px',
-                    border: 'var(--border) solid var(--rule)',
-                    background: 'var(--bg)',
-                    color: 'var(--ink)',
-                  }}
+                  className="mono post-tag"
                 >
                   {t}
                 </span>
@@ -171,23 +116,12 @@ export default function PostDetail() {
           }}
         >
           <PortableText value={post.body} components={ptComponents} />
-          <div
-            style={{
-              marginTop: 36,
-              paddingTop: 20,
-              borderTop: 'var(--border) solid var(--rule)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 12,
-            }}
-          >
-            <span className="mono caption" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div className="post-footer">
+            <span className="mono caption post-footer__end">
               <Star size={12} color="var(--accent)" stroke="var(--rule)" />
               end of transmission
             </span>
-            <span className="mono caption" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span className="mono caption post-footer__author">
               {post.author?.imageUrl && (
                 <img
                   src={post.author.imageUrl}
@@ -230,16 +164,8 @@ function PostNav({
   return (
     <Link
       to={`/blog/${post.slug}`}
-      style={{
-        textDecoration: 'none',
-        color: 'var(--ink)',
-        border: 'var(--border) solid var(--rule)',
-        boxShadow: 'var(--shadow) var(--shadow) 0 0 var(--rule)',
-        background: 'var(--paper)',
-        padding: '18px 22px',
-        display: 'block',
-        textAlign: align,
-      }}
+      className="post-nav-link"
+      style={{ textAlign: align }}
     >
       <div className="caption">{label}</div>
       <div className="display" style={{ marginTop: 8, fontSize: 22, lineHeight: 1.1, letterSpacing: '-0.02em' }}>

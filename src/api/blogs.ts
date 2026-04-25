@@ -23,6 +23,28 @@ type ApiResponse = {
   items: Blog[];
 };
 
+export type PostKind = 'log' | 'rant' | 'note';
+
+export const KIND_BG: Record<PostKind, string> = {
+  log: 'var(--accent)',
+  rant: 'var(--ink)',
+  note: 'var(--paper)',
+};
+
+export const KIND_INK: Record<PostKind, string> = {
+  log: 'var(--ink)',
+  rant: 'var(--bg)',
+  note: 'var(--ink)',
+};
+
+const KIND_TAGS: Record<string, PostKind> = {
+  rant: 'rant',
+  note: 'note',
+  notes: 'note',
+  log: 'log',
+  logs: 'log',
+};
+
 const ENDPOINT = 'https://backendbridge.ameys.eu/cdn/all-blogs';
 
 let cache: Promise<Blog[]> | null = null;
@@ -34,7 +56,9 @@ export function fetchBlogs(): Promise<Blog[]> {
         if (!r.ok) throw new Error(`blogs api ${r.status}`);
         return r.json() as Promise<ApiResponse>;
       })
-      .then((d) => d.items)
+      .then((d) =>
+        d.items.sort((a, b) => +new Date(b.published) - +new Date(a.published))
+      )
       .catch((e) => {
         cache = null;
         throw e;
@@ -43,32 +67,6 @@ export function fetchBlogs(): Promise<Blog[]> {
   return cache;
 }
 
-export function formatDate(iso: string): string {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-GB', {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-  }).toLowerCase();
-}
-
-export function readingTime(plain: string): string {
-  const words = (plain || '').trim().split(/\s+/).filter(Boolean).length;
-  const mins = Math.max(1, Math.round(words / 200));
-  return `${mins} min`;
-}
-
-export type PostKind = 'log' | 'rant' | 'note';
-
-const KIND_TAGS: Record<string, PostKind> = {
-  rant: 'rant',
-  note: 'note',
-  notes: 'note',
-  log: 'log',
-  logs: 'log',
-};
-
 export function deriveKind(tags: string[] | undefined): PostKind {
   if (!tags) return 'log';
   for (const t of tags) {
@@ -76,4 +74,17 @@ export function deriveKind(tags: string[] | undefined): PostKind {
     if (k) return k;
   }
   return 'log';
+}
+
+export function formatDate(iso: string): string {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  return d
+    .toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: '2-digit' })
+    .toLowerCase();
+}
+
+export function readingTime(plain: string): string {
+  const words = (plain || '').trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.round(words / 200))} min`;
 }

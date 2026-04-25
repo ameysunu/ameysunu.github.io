@@ -1,46 +1,12 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Slab from './primitives/Slab';
 import Star from './primitives/Star';
 import Sticker from './primitives/Sticker';
-import {
-  fetchBlogs,
-  formatDate,
-  readingTime,
-  deriveKind,
-  type Blog as BlogPost,
-  type PostKind,
-} from './api/blogs';
-
-const KIND_BG: Record<PostKind, string> = {
-  log: 'var(--accent)',
-  rant: 'var(--ink)',
-  note: 'var(--paper)',
-};
+import { formatDate, readingTime, deriveKind, KIND_BG, type Blog as BlogPost } from './api/blogs';
+import { usePosts } from './hooks/usePosts';
 
 export default function Blog() {
-  const [posts, setPosts] = useState<BlogPost[] | null>(null);
-  const [err, setErr] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchBlogs()
-      .then((items) => {
-        if (cancelled) return;
-        const sorted = [...items].sort(
-          (a, b) => +new Date(b.published) - +new Date(a.published)
-        );
-        setPosts(sorted);
-      })
-      .catch((e) => {
-        if (cancelled) return;
-        setErr(String(e?.message ?? e));
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+  const { posts, err } = usePosts();
   const count = posts?.length ?? 0;
 
   return (
@@ -133,13 +99,10 @@ function PostRow({ post, last }: { post: BlogPost; last: boolean }) {
       className="row-post"
       style={{ borderBottom: last ? 'none' : 'var(--border) solid var(--rule)' }}
     >
-      <div
-        className="mono row-post-date caption"
-        style={{ padding: '16px 18px', borderRight: 'var(--border) solid var(--rule)', fontSize: 12, letterSpacing: '0.12em' }}
-      >
+      <div className="mono row-post-date">
         {formatDate(post.published)}
       </div>
-      <div style={{ padding: '16px 14px', borderRight: 'var(--border) solid var(--rule)' }}>
+      <div className="row-post-kind">
         <span
           className="mono"
           style={{

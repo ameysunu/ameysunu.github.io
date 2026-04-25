@@ -137,10 +137,7 @@ export default function About() {
               className="row-timeline"
               style={{ borderBottom: i === TIMELINE.length - 1 ? 'none' : 'var(--border) solid var(--rule)' }}
             >
-              <div
-                className="display"
-                style={{ fontSize: 30, padding: '14px 20px', borderRight: 'var(--border) solid var(--rule)' }}
-              >
+              <div className="display timeline-year">
                 {y}
               </div>
               <div style={{ padding: '14px 20px', fontSize: 15 }}>{t}</div>

@@ -103,17 +103,11 @@ export default function Home() {
 
         <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 22 }}>
           <Slab bg="var(--paper)" pad={0}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <div className="stat-grid">
               <StatCell k="years shipping" v={String(yearsShipping()).padStart(2, '0')} />
               <StatCell k="langs fluent" v="04" right />
             </div>
-            <div
-              style={{
-                borderTop: 'var(--border) solid var(--rule)',
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-              }}
-            >
+            <div className="stat-grid" style={{ borderTop: 'var(--border) solid var(--rule)' }}>
               <StatCell k="coffees / day" v="∞" />
               <StatCell k="bugs in prod" v="yes" right />
             </div>
@@ -257,10 +251,7 @@ function AsciiMap() {
     'baile atha cliath'
   ];
   return (
-    <pre
-      className="mono"
-      style={{ margin: 0, marginTop: 10, fontSize: 10, lineHeight: 1.1, whiteSpace: 'pre', color: 'var(--ink)' }}
-    >
+    <pre className="mono ascii-map">
       {rows.join('\n')}
     </pre>
   );
