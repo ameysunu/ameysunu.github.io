@@ -1,41 +1,53 @@
 import { useEffect, useState } from 'react';
-import './index.css';
-import LightMode from './assets/LightMode';
-import DarkMode from './assets/DarkMode';
+import { Link, useLocation } from 'react-router-dom';
+
+const NAV = [
+  { to: '/', label: 'home', match: (p: string) => p === '/' },
+  { to: '/blog', label: 'blog', match: (p: string) => p.startsWith('/blog') },
+  { to: '/about', label: 'about', match: (p: string) => p.startsWith('/about') },
+];
 
 export default function Nav() {
-    const [isDark, setIsDark] = useState<boolean>(() => {
-        const saved = localStorage.getItem('theme');
-        return (
-            saved === 'dark' ||
-            (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        );
-    });
+  const { pathname } = useLocation();
+  const [dark, setDark] = useState<boolean>(
+    () => document.documentElement.getAttribute('data-theme') === 'dark'
+  );
 
-    useEffect(() => {
-        const root = document.documentElement;
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    try {
+      localStorage.setItem('amey.theme', dark ? 'dark' : 'light');
+    } catch {
+      /* ignore */
+    }
+  }, [dark]);
 
-        if (isDark) {
-            root.classList.add('dark-mode');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            root.classList.remove('dark-mode');
-            localStorage.setItem('theme', 'light');
-        }
-
-        window.dispatchEvent(new Event('themeChange'));
-    }, [isDark]);
-
-    return (
-        <div className="nav-wrapper">
-            <div className="nav-links">
-                <a href="/" className="nav-link">home</a>
-                <a href="https://blogs.ameys.eu" className="nav-link">blog</a>
-                <a href="/about" className="nav-link">about</a>
-            </div>
-            <div onClick={() => setIsDark(prev => !prev)} className="nav-theme-toggle">
-                {isDark ? <LightMode /> : <DarkMode />}
-            </div>
-        </div>
-    );
+  return (
+    <header className="site-header">
+      <nav style={{ display: 'flex' }}>
+        {NAV.map((n) => {
+          const active = n.match(pathname);
+          return (
+            <Link
+              key={n.to}
+              to={n.to}
+              className={`mono nav-btn${active ? ' nav-btn--active' : ''}`}
+            >
+              {n.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="mono nav-v03">v03 · 2026</div>
+        <button
+          onClick={() => setDark((d) => !d)}
+          aria-label="toggle theme"
+          className="theme-btn"
+        >
+          {dark ? '☾' : '☀'}
+        </button>
+      </div>
+    </header>
+  );
 }
