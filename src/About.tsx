@@ -5,17 +5,18 @@ import { SectionHead } from './Home';
 const ROLES = ['bug maker.', 'engineer.', 'developer.'];
 
 const TOOLS: [string, string][] = [
-  ['editor', 'neovim, reluctantly'],
-  ['shell', 'zsh + starship'],
+  ['editor', 'visual studio, jet brains rider and xcode'],
+  ['shell', 'zsh, always'],
   ['notes', 'plain .md files'],
-  ['music', 'mostly drum & bass'],
+  ['music', 'edm'],
 ];
 
 const TIMELINE: [string, string][] = [
-  ['2026', 'building lisaos, an os in c, from scratch'],
+  ['2025', 'next .net backend gig, full-time, dublin'],
   ['2024', 'deep into swift concurrency + mobile architecture'],
-  ['2022', 'first full-time .net backend gig, dublin'],
-  ['2020', 'university — cs, caffeine, catastrophe'],
+  ['2022', 'first .net backend gig, as intern and full-time, dublin'],
+  ['2021', 'university — masters, cs, caffeine, catastrophe'],
+  ['2017', 'university - bachelors, cs, caffeine'],
 ];
 
 export default function About() {
@@ -128,7 +129,7 @@ export default function About() {
       </section>
 
       <section>
-        <SectionHead left="// the brief history" right="06 years · mostly typing" />
+        <SectionHead left="// the brief history" right="09 years · mostly typing" />
         <Slab bg="var(--paper)" pad={0}>
           {TIMELINE.map(([y, t], i) => (
             <div

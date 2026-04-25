@@ -14,7 +14,7 @@ export default function Footer() {
           </a>
         ))}
       </div>
-      <div className="footer-copy">© amey · dublin, ie · made loudly</div>
+      <div className="footer-copy">© amey · dublin, ie · made with react and claude</div>
     </footer>
   );
 }

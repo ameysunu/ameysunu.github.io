@@ -99,7 +99,7 @@ export default function Blog() {
             rss · atom · email
           </div>
           <p style={{ fontSize: 17, lineHeight: 1.5, marginTop: 14, marginBottom: 0, position: 'relative' }}>
-            notes from the bench. some are rants, some are logs from building things that
+            fresh thoughts, straight outta my head. some are rants, some are logs from building things that
             don&rsquo;t work yet. no newsletter. no take-aways. just writing to think.
           </p>
         </Slab>

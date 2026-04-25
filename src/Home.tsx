@@ -1,20 +1,21 @@
 import Slab from './primitives/Slab';
 import Star from './primitives/Star';
 import Sticker from './primitives/Sticker';
+import { yearsShipping } from './helpers/numbers';
 
 const UPTO = [
   { tag: 'building', body: 'lisaos — an operating system built in c', meta: '001' },
   { tag: 'learning', body: 'golang, systems design, swift concurrency & distributed systems', meta: '002' },
-  { tag: 'playing',  body: 'call of duty mw4 remastered + microsoft flight simulator', meta: '003' },
+  { tag: 'playing',  body: 'overwatch + microsoft flight simulator', meta: '003' },
 ];
 
 const STACK = [
   { k: 'backend', v: '.NET · C#', sub: 'apis, services, all the wiring' },
   { k: 'mobile',  v: 'Swift',     sub: 'swiftui + concurrency' },
-  { k: 'systems', v: 'C',         sub: 'lisaos kernel work' },
+  { k: 'systems', v: 'C',         sub: 'kernel programming' },
   { k: 'going',   v: 'Go',        sub: 'learning in public' },
-  { k: 'web',     v: 'React',     sub: 'against my will' },
-  { k: 'data',    v: 'Postgres',  sub: 'always postgres' },
+  { k: 'web',     v: 'React + Typescript',     sub: 'against my will' },
+  { k: 'data',    v: 'MongoDb · SQL Server',  sub: 'always SQL' },
 ];
 
 export default function Home() {
@@ -103,7 +104,7 @@ export default function Home() {
         <div style={{ display: 'grid', gridTemplateRows: 'auto auto 1fr', gap: 22 }}>
           <Slab bg="var(--paper)" pad={0}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              <StatCell k="years shipping" v="06" />
+              <StatCell k="years shipping" v={String(yearsShipping()).padStart(2, '0')} />
               <StatCell k="langs fluent" v="04" right />
             </div>
             <div
@@ -128,7 +129,7 @@ export default function Home() {
             <div className="caption" style={{ opacity: 0.7 }}>status</div>
             <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
               <span className="status-dot" />
-              <span style={{ fontWeight: 600, fontSize: 18 }}>open to interesting work</span>
+              <span style={{ fontWeight: 600, fontSize: 18 }}>writing more code and developing more bugs</span>
             </div>
             <div className="mono" style={{ marginTop: 10, fontSize: 12, opacity: 0.7 }}>
               → systems · backend · mobile · anything low-level
@@ -252,13 +253,8 @@ function StackCell({ k, v, sub, idx }: { k: string; v: string; sub: string; idx:
 
 function AsciiMap() {
   const rows = [
-    '     ░▒▓█████▓▒',
-    '   ░▓██████████▓▒',
-    '  ░██████████████▓',
-    ' ▒████ dublin  ●██▓',
-    ' ▓██████████████▓',
-    '  ░▓██████████▒',
-    '     ░▒▓███▓▒',
+    'dublin',
+    'baile atha cliath'
   ];
   return (
     <pre
