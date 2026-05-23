@@ -1,26 +1,15 @@
-import type { PortableTextBlock } from '@portabletext/react';
-
-export type BlogAuthor = {
-  id: string;
-  name: string;
-  imageUrl?: string;
-};
-
 export type Blog = {
   id: string;
   title: string;
   slug: string;
-  published: string;
-  subHeading: string;
+  subtitle: string;
+  status: number;
+  publishDate: string;
+  coverImage: string;
   tags: string[];
-  body: PortableTextBlock[];
-  bodyPlain: string;
-  author?: BlogAuthor;
-};
-
-type ApiResponse = {
-  count: number;
-  items: Blog[];
+  body: string;
+  updatedDate: string;
+  createdDate: string;
 };
 
 export type PostKind = 'log' | 'rant' | 'note';
@@ -45,7 +34,7 @@ const KIND_TAGS: Record<string, PostKind> = {
   logs: 'log',
 };
 
-const ENDPOINT = 'https://backendbridge.ameys.eu/cdn/all-blogs';
+const ENDPOINT = 'https://blogsapi.ameys.eu/api/public/Blog';
 
 let cache: Promise<Blog[]> | null = null;
 
@@ -54,10 +43,10 @@ export function fetchBlogs(): Promise<Blog[]> {
     cache = fetch(ENDPOINT)
       .then((r) => {
         if (!r.ok) throw new Error(`blogs api ${r.status}`);
-        return r.json() as Promise<ApiResponse>;
+        return r.json() as Promise<Blog[]>;
       })
-      .then((d) =>
-        d.items.sort((a, b) => +new Date(b.published) - +new Date(a.published))
+      .then((items) =>
+        items.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate))
       )
       .catch((e) => {
         cache = null;
@@ -84,7 +73,11 @@ export function formatDate(iso: string): string {
     .toLowerCase();
 }
 
-export function readingTime(plain: string): string {
-  const words = (plain || '').trim().split(/\s+/).filter(Boolean).length;
+export function htmlToPlain(html: string): string {
+  return (html || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export function readingTime(html: string): string {
+  const words = htmlToPlain(html).split(/\s+/).filter(Boolean).length;
   return `${Math.max(1, Math.round(words / 200))} min`;
 }

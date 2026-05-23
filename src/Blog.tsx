@@ -100,7 +100,7 @@ function PostRow({ post, last }: { post: BlogPost; last: boolean }) {
       style={{ borderBottom: last ? 'none' : 'var(--border) solid var(--rule)' }}
     >
       <div className="mono row-post-date">
-        {formatDate(post.published)}
+        {formatDate(post.publishDate)}
       </div>
       <div className="row-post-kind">
         <span
@@ -122,11 +122,11 @@ function PostRow({ post, last }: { post: BlogPost; last: boolean }) {
       <div style={{ padding: '14px 18px' }}>
         <div style={{ fontSize: 17, fontWeight: 600 }}>{post.title}</div>
         <div className="mono row-post-subhead" style={{ fontSize: 11, marginTop: 3 }}>
-          {post.subHeading}
+          {post.subtitle}
         </div>
       </div>
       <div className="mono row-post-reading caption" style={{ padding: '0 18px', letterSpacing: '0.12em' }}>
-        {readingTime(post.bodyPlain)}
+        {readingTime(post.body)}
         <span aria-hidden className="row-post-arrow">→</span>
       </div>
     </Link>

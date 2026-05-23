@@ -1,5 +1,4 @@
 import { useParams, Link } from 'react-router-dom';
-import { PortableText, type PortableTextComponents } from '@portabletext/react';
 import Slab from './primitives/Slab';
 import Star from './primitives/Star';
 import Sticker from './primitives/Sticker';
@@ -13,20 +12,6 @@ import {
   type Blog as BlogPost,
 } from './api/blogs';
 import { usePosts } from './hooks/usePosts';
-
-const ptComponents: PortableTextComponents = {
-  marks: {
-    link: ({ value, children }) => {
-      const href: string = value?.href ?? '#';
-      const external = /^https?:/.test(href);
-      return (
-        <a href={href} {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}>
-          {children}
-        </a>
-      );
-    },
-  },
-};
 
 export default function PostDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -69,8 +54,8 @@ export default function PostDetail() {
           className="postdetail-meta"
           style={{ padding: '22px 28px', borderBottom: 'var(--border) solid var(--rule)' }}
         >
-          <span className="mono caption">{formatDate(post.published)}</span>
-          <span className="mono caption">{readingTime(post.bodyPlain)} read</span>
+          <span className="mono caption">{formatDate(post.publishDate)}</span>
+          <span className="mono caption">{readingTime(post.body)} read</span>
         </div>
 
         <div style={{ padding: '28px 32px 36px' }}>
@@ -87,7 +72,7 @@ export default function PostDetail() {
             {post.title}
           </h1>
           <p className="mono" style={{ marginTop: 18, marginBottom: 0, fontSize: 15, color: 'var(--muted)', maxWidth: 640 }}>
-            {post.subHeading}
+            {post.subtitle}
           </p>
           {post.tags && post.tags.length > 0 && (
             <div style={{ marginTop: 18, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -115,21 +100,14 @@ export default function PostDetail() {
             lineHeight: 1.7,
           }}
         >
-          <PortableText value={post.body} components={ptComponents} />
+          <div dangerouslySetInnerHTML={{ __html: post.body }} />
           <div className="post-footer">
             <span className="mono caption post-footer__end">
               <Star size={12} color="var(--accent)" stroke="var(--rule)" />
               end of transmission
             </span>
             <span className="mono caption post-footer__author">
-              {post.author?.imageUrl && (
-                <img
-                  src={post.author.imageUrl}
-                  alt=""
-                  style={{ width: 22, height: 22, border: 'var(--border) solid var(--rule)', objectFit: 'cover' }}
-                />
-              )}
-              written by {post.author?.name?.toLowerCase() ?? 'amey'} · dublin
+              written by amey · dublin
             </span>
           </div>
         </article>
