@@ -1,0 +1,79 @@
+{
+  "brand": "amey",
+  "name": "amey.",
+  "tagline": "hey, i'm amey a software developer based out of dublin, ireland",
+  "nav": [
+    {
+      "label": "about",
+      "href": "#about"
+    },
+    {
+      "label": "stack",
+      "href": "#stack"
+    },
+    {
+      "label": "github",
+      "href": "https://github.com/ameysunu"
+    },
+    {
+      "label": "email",
+      "href": "mailto:ameysunu00719@gmail.com"
+    }
+  ],
+  "about": [
+    "i'm a software developer, currently working at studyclix. i write software, mainly backend in .net and mobile development in swift and flutter. i like building things that are fast, minimal and powerful.",
+    "and lately i've been diving more into systems-level programming: os design, distributed systems and concurrency, and even learning go."
+  ],
+  "stack": [
+    {
+      "title": "backend",
+      "items": [
+        "c# / .net",
+        "golang"
+      ]
+    },
+    {
+      "title": "mobile dev",
+      "items": [
+        "swiftui",
+        "flutter"
+      ]
+    },
+    {
+      "title": "data",
+      "items": [
+        "sql server",
+        "redis",
+        "firebase",
+        "mongodb",
+        "postgres"
+      ]
+    },
+    {
+      "title": "infra",
+      "items": [
+        "azure, terraform",
+        "gcp",
+        "aws",
+        "cloudflare"
+      ]
+    },
+    {
+      "title": "web",
+      "items": [
+        "react",
+        "typescript"
+      ]
+    },
+    {
+      "title": "low-level",
+      "items": [
+        "c"
+      ]
+    }
+  ],
+  "footer": {
+    "location": "@",
+    "year": "2026"
+  }
+}

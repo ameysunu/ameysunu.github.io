@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-16T11:24:17.453Z",
+        "reason": "user confirmed: Inter is prescribed in the Downloads/index.html mock the user asked me to implement verbatim"
+      }
+    ]
+  }
+}

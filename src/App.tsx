@@ -1,23 +1,13 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { PortfolioProvider } from './context/PortfolioContext';
 import Shell from './Shell';
 import Home from './Home';
-import About from './About';
-import Blog from './Blog';
-import PostDetail from './PostDetail';
-import NotFound from './404';
+import NotFound from './components/NotFound';
 
 export default function App() {
+  const isHome = window.location.pathname === '/';
   return (
-    <Router>
-      <Shell>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<PostDetail />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Shell>
-    </Router>
+    <PortfolioProvider>
+      <Shell>{isHome ? <Home /> : <NotFound />}</Shell>
+    </PortfolioProvider>
   );
 }
